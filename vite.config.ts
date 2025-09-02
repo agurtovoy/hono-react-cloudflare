@@ -2,14 +2,13 @@
 // BEGIN
 //
 
-import { defineConfig, splitVendorChunkPlugin } from "vite";
+import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [
-    splitVendorChunkPlugin(),
     tsconfigPaths(),
     react({ include: "**/*.tsx" }),
   ],
@@ -24,6 +23,11 @@ export default defineConfig({
         globals: resolve(__dirname, "src/globals.css"),
       },
       output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
         entryFileNames: "assets/[name].js",
         chunkFileNames: "assets/[name].js",
         assetFileNames: "assets/[name].[ext]",
