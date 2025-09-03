@@ -13,6 +13,8 @@ import { SSRRender } from "src/entry-server";
 import assetManifest from "__STATIC_CONTENT_MANIFEST";
 import { cache } from "hono/cache";
 import { env } from 'hono/adapter'
+import { fetchPosts } from "@app/model/posts";
+
 
 type Bindings = {
   __STATIC_CONTENT: KVNamespace;
@@ -20,26 +22,16 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-type Data = {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-};
-
 app
   .get(
     "*",
     cache({
-      cacheName: "my-app",
+      cacheName: "route cache",
       cacheControl: "max-age=3600",
     })
   )
   .get("/api/posts", async (c) => {
-    const url = "https://jsonplaceholder.typicode.com/posts";
-    const response = await fetch(url);
-    const result: Data[] = await response.json();
-    return c.json(result);
+    return c.json(await fetchPosts());
   })
   .get("/assets/*", async (c) => {
     try {
@@ -72,7 +64,9 @@ app
   })
   .get("*", async (c) => {
     const { API_ROOT, CF_PAGES_URL } = env<{ API_ROOT: string, CF_PAGES_URL: string }>(c)
-    return c.newResponse(await SSRRender({ API_ROOT: CF_PAGES_URL || API_ROOT }))
+    console.log(`\n\n@@@@@@@@@@ ${API_ROOT}, ${CF_PAGES_URL}`)
+
+    return c.newResponse(await SSRRender())
   })
   .notFound((c) =>
     c.json(

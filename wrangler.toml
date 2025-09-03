@@ -1,6 +1,6 @@
 name = "hono-react-cloudflare"
 main = "server.ts"
-compatibility_date = "2023-09-20"
+compatibility_date = "2025-09-01"
 
 [site]
 bucket = "dist"
@@ -13,6 +13,3 @@ watch_dir = "src"
 [observability]
 enabled = true
 head_sampling_rate = 1
-
-[env.production.vars]
-API_ROOT = "https://hono-react-cloudflare.autumn-shadow-40fa.workers.dev"

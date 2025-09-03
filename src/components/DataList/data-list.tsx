@@ -28,7 +28,7 @@ import { Fragment } from "react";
 function DataList({ posts: prefetchedPosts } : { posts?: Data[] }) {
   return (
     <Fragment>
-      <h2>Posts? Posts!</h2>
+      <h2>Posts? Yes, Posts!</h2>
         <ul>
           {(prefetchedPosts ?? []).map((item) => (
             <li key={item.id}>{item.title}</li>
