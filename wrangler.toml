@@ -13,3 +13,6 @@ watch_dir = "src"
 [observability]
 enabled = true
 head_sampling_rate = 1
+
+[env.production.vars]
+API_ROOT = "hono-react-cloudflare.autumn-shadow-40fa.workers.dev"
