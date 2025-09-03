@@ -1,4 +1,4 @@
-name = "hono-react-ssr"
+name = "hono-react-cloudflare"
 main = "server.ts"
 compatibility_date = "2023-09-20"
 
