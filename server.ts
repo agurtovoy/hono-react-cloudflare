@@ -71,8 +71,8 @@ app
     }
   })
   .get("*", async (c) => {
-    const { API_ROOT } = env<{ API_ROOT: string }>(c)
-    return c.newResponse(await SSRRender({ API_ROOT }))
+    const { API_ROOT, CF_PAGES_URL } = env<{ API_ROOT: string, CF_PAGES_URL: string }>(c)
+    return c.newResponse(await SSRRender({ API_ROOT: CF_PAGES_URL || API_ROOT }))
   })
   .notFound((c) =>
     c.json(
