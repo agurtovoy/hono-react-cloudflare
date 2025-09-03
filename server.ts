@@ -12,6 +12,7 @@ import {
 import { SSRRender } from "src/entry-server";
 import assetManifest from "__STATIC_CONTENT_MANIFEST";
 import { cache } from "hono/cache";
+import { env } from 'hono/adapter'
 
 type Bindings = {
   __STATIC_CONTENT: KVNamespace;
@@ -69,7 +70,10 @@ app
       }
     }
   })
-  .get("*", async (c) => c.newResponse(await SSRRender()))
+  .get("*", async (c) => {
+    const { API_ROOT } = env<{ API_ROOT: string }>(c)
+    return c.newResponse(await SSRRender({ API_ROOT }))
+  })
   .notFound((c) =>
     c.json(
       {

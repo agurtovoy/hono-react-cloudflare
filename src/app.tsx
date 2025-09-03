@@ -6,10 +6,14 @@ import { lazy, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const DataList = lazy(() => import("@app/components/DataList/data-list"));
+import DataList from "@app/components/DataList/data-list";
+import { type Data } from "@app/model/posts";
+
+import { SSR_DATA_KEY } from "./lib/hydration";
+
 const Heading = lazy(() => import("@app/components/Heading/heading"));
 
-function Application() {
+function Application({ posts } : { posts?: Data[] }) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -35,11 +39,14 @@ function Application() {
         <QueryClientProvider client={queryClient}>
           <main className="main">
             <Heading />
-            <DataList />
+            <DataList posts={posts} />
           </main>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </body>
+    <script dangerouslySetInnerHTML={{
+      __html: `window['${SSR_DATA_KEY}'] = ${JSON.stringify({ posts })};`
+    }} />
     </html>
   );
 }

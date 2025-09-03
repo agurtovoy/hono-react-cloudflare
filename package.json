@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
+    "clean": "rm -rf dist && rm -rf .wrangler",
+    "dev": "wrangler dev --local --log-level debug",
     "build": "tsc && vite build",
     "server": "tsx src/server.tsx",
     "deploy": "wrangler deploy"
